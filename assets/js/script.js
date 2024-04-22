@@ -1,98 +1,118 @@
-// Data for the table
-const tableData = [
-  { id: 1, imgSrc: "...", marka: "Mark", model: "Otto", price: "@mdo" },
-  { id: 2, imgSrc: "...", marka: "Jacob", model: "Thornton", price: "@fat" },
-  {
-    id: 3,
-    imgSrc: "...",
-    marka: "Larry the Bird",
-    model: "@twitter",
-    price: "jnsdc",
-  },
-];
+document.addEventListener("DOMContentLoaded", function() {
+  const form = document.getElementById("registerForm");
+  const carContainer = document.getElementById("carContainer");
+  const cars = JSON.parse(localStorage.getItem("cars")) || [];
+  let carIdCounter = cars.length > 0 ? Math.max(...cars.map(car => car.id)) + 1 : 1;
 
-// Create table element
-const table = document.createElement("table");
-table.classList.add("table", "mt-5", "mb-5");
+  const saveCarsToLocalStorage = function(cars) {
+      localStorage.setItem("cars", JSON.stringify(cars));
+  };
 
-// Create table header
-const thead = document.createElement("thead");
-const headerRow = document.createElement("tr");
-["Id", "IMG", "Marka", "Model", "Price", "Action"].forEach((headerText) => {
-  const th = document.createElement("th");
-  th.scope = "col";
-  th.textContent = headerText;
-  headerRow.appendChild(th);
-});
-thead.appendChild(headerRow);
-table.appendChild(thead);
+  const renderCarsFromLocalStorage = function() {
+      cars.forEach(function(car) {
+          const carCard = createCarCard(car);
+          carContainer.insertAdjacentHTML("beforeend", carCard);
+      });
+  };
 
-// Create table body
-const tbody = document.createElement("tbody");
-tableData.forEach((item) => {
-  const row = document.createElement("tr");
+  const createCarCard = function(car) {
+      return `
+        <div class= "col-3">
+          <div id="car${car.id}" class="card border-0 rounded p-1" style="width: 18rem;" data-id="${car.id}" data-img="${car.image}" data-make="${car.mark}" data-model="${car.model}" data-price="${car.price}">
+              <div class="card_header">
+                  <div class="text">
+                      <h5 class="card-title make">${car.mark}</h5>
+                      <p class="card-text model">${car.model}</p>
+                  </div>
+                  <a href="#" onclick="addToWishlist(event)"><i class="fa-regular fa-heart"></i></a>
+              </div>
+              <div class="card-body">
+                  <img src="${car.image}" class="card-img-top" alt="...">
+              </div>
+              <div class="car-details">
+                  <img src="./assets/img/gas-station.png" alt=""><span>${car.fuel}L</span>
+                  <img src="./assets/img/Car (6).png" alt=""><span>${car.transmission}</span>
+                  <!-- Əlavə detallar əlavə edə bilərsiniz -->
+              </div>
+              <div class="card_footer">
+                  <span class="price"><b>$${car.price}/</b>gün</span>
+                  <button class="btn btn-primary">İcarə Et</button>
+              </div>
+          </div>
+        </div>
+      `;
+  };
 
-  // Add cell for each data field
-  Object.values(item).forEach((value) => {
-    const cell = document.createElement("td");
-    cell.textContent = value;
-    row.appendChild(cell);
+renderCarsFromLocalStorage();
+
+form.addEventListener("submit", function(event) {
+      event.preventDefault();
+
+      const mark = document.getElementById("mark").value;
+      const model = document.getElementById("model").value;
+      const image = "";
+      const ban = document.getElementById("ban").value;
+      const fuel = document.getElementById("litr").value;
+      const transmission = document.getElementById("transmission").value;
+      const price = document.getElementById("price").value;
+
+      const newCar = {
+          id: carIdCounter++,
+          mark: mark,
+          model: model,
+          image: image,
+          fuel: fuel,
+          transmission: transmission,
+          price: price
+      };
+
+      cars.push(newCar);
+      saveCarsToLocalStorage(cars);
+
+      const carCard = createCarCard(newCar);
+      carContainer.insertAdjacentHTML("beforeend", carCard);
+
+      form.reset();
+
+      window.location.href = "./index.html";
   });
-  // Add image cell
-  const imgCell = document.createElement("td");
-  
-  // Add action buttons
-  const actionCell = document.createElement("td");
-  const editBtn = document.createElement("button");
-  editBtn.classList.add("btn", "btn-warning", "edit-btn");
-  editBtn.textContent = "edit";
-  const deleteBtn = document.createElement("button");
-  deleteBtn.classList.add("btn", "btn-danger", "delete-btn");
-  deleteBtn.textContent = "delete";
-  actionCell.appendChild(editBtn);
-  actionCell.appendChild(deleteBtn);
-  row.appendChild(actionCell);
-
-  tbody.appendChild(row);
 });
-table.appendChild(tbody);
 
-// Append table to container
-document.getElementById("tableContainer").appendChild(table);
+function addToWishlist(event) {
+  const clickedCard = event.target.closest(".card");
+  const carId = clickedCard.dataset.id;
+  const carMake = clickedCard.dataset.make;
+  const carModel = clickedCard.dataset.model;
+  const carPrice = clickedCard.dataset.price;
+  const wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
 
-// Event listeners for edit and delete buttons
-document.querySelectorAll(".edit-btn").forEach((btn) => {
-  btn.addEventListener("click", function () {
-    const row = this.closest("tr");
-    alert("Edit ID: " + row.cells[0].textContent);
-    // Add your edit functionality here
+  if (!wishlist.find(item => item.id === carId)) {
+      wishlist.push({ id: carId, make: carMake, model: carModel, price: carPrice });
+      localStorage.setItem("wishlist", JSON.stringify(wishlist));
+      alert("Car added to wishlist!");
+      renderWishlistTable();
+  } else {
+      alert("This car is already in your wishlist!");
+  }
+}
+
+function renderWishlistTable() {
+  const wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
+  const wishlistBody = document.getElementById("wishlistBody");
+  wishlistBody.innerHTML = "";
+  wishlist.forEach(function(car) {
+      wishlistBody.insertAdjacentHTML("beforeend", `
+          <tr>
+              <td>${car.id}</td>
+              <td>${car.make}</td>
+              <td>${car.model}</td>
+              <td>$${car.price}</td>
+              <td>
+                  <button class="btn btn-danger" onclick="removeFromWishlist(event)">Remove</button>
+              </td>
+          </tr>
+      `);
   });
-});
+}
 
-document.querySelectorAll(".delete-btn").forEach((btn) => {
-  btn.addEventListener("click", function () {
-    const row = this.closest("tr");
-    alert("Delete ID: " + row.cells[0].textContent);
-    // Add your delete functionality here
-    row.remove();
-  });
-});
-
-document.getElementById("registerForm").addEventListener("submit", function (event) {
-    event.preventDefault(); // Prevent the form from submitting normally
-
-    // Perform form validation
-    const mark = document.getElementById("mark").value.trim();
-    const model = document.getElementById("model").value.trim();
-    const ban = document.getElementById("ban").value;
-    const litr = document.getElementById("litr").value.trim();
-    const transmission = document.getElementById("transmission").value;
-    const price = document.getElementById("price").value.trim();
-
-    // Check if any field is empty
-    if (!mark || !model || !ban || !litr || !transmission || !price) {
-      alert("Xahiş olunur boş yer saxlamayın");
-      return;
-    }
-    alert("Maşın qeydiyyata alındı");
-});
+renderWishlistTable();
