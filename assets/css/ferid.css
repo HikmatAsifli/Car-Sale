@@ -65,6 +65,7 @@ ul li{
     justify-content: space-around;
     font-family: "Plus Jakarta Sans", sans-serif;
     font-weight: bold;
+    margin-bottom: 20px;
 }
 .text-center .text-right a{
     text-decoration: none;
