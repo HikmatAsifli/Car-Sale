@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
+    <title>Basket</title>
     <link rel="stylesheet" href="./assets/css/hikmat.css">
     <link rel="stylesheet" href="./assets/css/ferid.css">
     <link rel="stylesheet" href="./assets/css/rufet.css">
@@ -14,7 +14,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- Rufat -->
     <header>
         <nav>
             <div class="container rufats">
@@ -35,107 +34,22 @@
             </div>
         </nav>
     </header>
-    <section class="twocardsection">
-        <div class="container rentaldiv">
-            <div class="col-6 firstrental">
-                <div class="firstrentaltext"><h3>The Best Platform for Car Rental</h3>
-                    <p>Ease of doing a car rental safely and reliably. Of course at a low price.</p></div>
-                <a href="#" class="btn btn-primary">Rental Car</a>
-                <div class="bgcforcard">
-                    <img src="assets/img/BG.png" alt="">
-                </div>
-            </div>
-            <div class="col-6 secondrental">
-                <div class="secondrentaltext"><h3>Easy way to rent a car at a low price</h3>
-                <p>Ease of doing a car rental safely and reliably. Of course at a low price.</p></div>
-                
-                <a href="#" class="btn btn-primary">Rental Car</a>
-                <div class="bgcforcard">
-                    <img src="assets/img/BG2.png" alt="">
-                </div>
-            </div>
-        </div>
-    </section>
-    <section>
-        <div class="container pickdrop">
-            <div class="pickup">
-                <div class="textupper">
-                    <div class="highvaluetext">
-                        <img src="./assets/img/mark.png" alt="">
-                        <h5>Pick-up</h5>
-                    </div>
-                    <div class="yourdatas">
-                        <div class="yourloc">
-                            <h5>Locations</h5>
-                            <div class="setterrufat">
-                                <p>Select your city</p>
-                                <img src="./assets/img/arrow-down.png" alt="">
-                            </div>
-                        </div>
-                        <div class="yourdate">
-                            <h5>Date</h5>
-                            <div class="setterrufat">
-                                <p>Select your city</p>
-                                <img src="./assets/img/arrow-down.png" alt="">
-                            </div>
-                        </div>
-                        <div class="yourtime">
-                            <h5>Time</h5>
-                            <div class="setterrufat">
-                                <p>Select your city</p>
-                                <img src="./assets/img/arrow-down.png" alt="">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="specialbtn">
-                <a href="#" class="btn btn-primary"><i class="fa-solid fa-right-left"></i></a>
-            </div>
-            <div class="dropoff">
-                <div class="textlower">
-                    <div class="highvaluetext">
-                        <img src="./assets/img/mark.png" alt="">
-                        <h5>Drop off</h5>
-                    </div>
-                    <div class="yourdatas">
-                        <div class="yourloc">
-                            <h5>Locations</h5>
-                            <div class="setterrufat">
-                                <p>Select your city</p>
-                                <img src="./assets/img/arrow-down.png" alt="">
-                            </div>
-                        </div>
-                        <div class="yourdate">
-                            <h5>Date</h5>
-                            <div class="setterrufat">
-                                <p>Select your city</p>
-                                <img src="./assets/img/arrow-down.png" alt="">
-                            </div>
-                        </div>
-                        <div class="yourtime">
-                            <h5>Time</h5>
-                            <div class="setterrufat">
-                                <p>Select your city</p>
-                                <img src="./assets/img/arrow-down.png" alt="">
-                            </div>
-                        </div>
-                </div>
-            </div>
-        </div>
-    </section>
 
+    <h1 class="mb-5 mt-5 text-center text-success display-2">Basket</h1>
+    <table class="table mt-5 mb-5" id="basketTable">
+        <thead>
+          <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Make</th>
+            <th scope="col">Model</th>
+            <th scope="col">Count</th>
+            <th scope="col">Total Price</th>
+            <th scope="col">Action</th>
+          </tr>
+        </thead>
+        <tbody id="basketBody"></tbody>
+    </table>
 
-    <!-- Ferid  -->
-    <section>
-      <div class="container">
-        <div class="row mt-5 carContainer" id="carContainer">
-        </div>
-      </div>
-    </section>
-    <div class="button_all">
-        <button class="btn btn-primary">Show more car</button>
-    </div>
     <section class="">
         <footer class="bg-body-tertiary">
           <div class="container p-4">

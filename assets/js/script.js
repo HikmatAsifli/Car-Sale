@@ -36,7 +36,7 @@ document.addEventListener("DOMContentLoaded", function() {
               </div>
               <div class="card_footer">
                   <span class="price"><b>$${car.price}/</b>gün</span>
-                  <button class="btn btn-primary">İcarə Et</button>
+                  <button class="btn btn-primary" onclick="addToBasket(event)">İcarə Et</button>
               </div>
           </div>
         </div>
@@ -116,3 +116,53 @@ function renderWishlistTable() {
 }
 
 renderWishlistTable();
+
+
+function removeFromWishlist(event){
+    let carId = event.target.closest("tr").firstElementChild.innerText;
+    let wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
+    wishlist = wishlist.filter(item => item.id !== carId);
+    localStorage.setItem("wishlist", JSON.stringify(wishlist));
+    alert("Car removed from wishlist!");
+    renderWishlistTable();
+}
+
+
+function addToBasket(event) {
+    const clickedCard = event.target.closest(".card");
+    const carId = clickedCard.dataset.id;
+    const carMake = clickedCard.dataset.make;
+    const carModel = clickedCard.dataset.model;
+    const carPrice = clickedCard.dataset.price;
+    const basket = JSON.parse(localStorage.getItem("basket")) || [];
+
+    if (!basket.find(item => item.id === carId)) {
+        basket.push({ id: carId, make: carMake, model: carModel, price: carPrice });
+        localStorage.setItem("basket", JSON.stringify(basket));
+        alert("Car added to basket!");
+    } else {
+        alert("This car is already in your basket!");
+    }
+}
+
+function renderBasketTable() {
+    const basket = JSON.parse(localStorage.getItem("basket")) || [];
+    const basketBody = document.getElementById("basketBody");
+    basketBody.innerHTML = "";
+    basket.forEach(function(car) {
+        basketBody.insertAdjacentHTML("beforeend", `
+            <tr>
+                <td>${car.id}</td>
+                <td>${car.make}</td>
+                <td>${car.model}</td>
+                <td>$${car.count}</td>
+                <td>$${car.price}</td>
+                <td>
+                    <button class="btn btn-danger" onclick="removeFromBasket(event)">Remove</button>
+                </td>
+            </tr>
+        `);
+    });
+  }
+
+  renderBasketTable();
